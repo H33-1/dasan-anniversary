@@ -98,10 +98,25 @@ padding:12px 16px;border-radius:16px;font-weight:800;display:none;max-width:88%;
 #p2 .friendNo1,#p2 .friendName1{top:71.35%}
 #p2 .friendNo2,#p2 .friendName2{top:76.02%}
 #p2 .friendNo3,#p2 .friendName3{top:80.68%}
+
+.holiday-row.reserved{opacity:.6;cursor:not-allowed;background:#f2eee6}
+.holiday-row.reserved .date,.holiday-row.reserved .title{text-decoration:line-through}
+.holiday-row .title small{display:block;text-decoration:none;font-size:11px;margin-top:4px;font-weight:400}
+#connectionStatus{padding:10px 16px;background:#fff3dc;font-size:13px;text-align:center;line-height:1.5}
+#connectionStatus:empty{display:none}
+body.busy #app{pointer-events:none;opacity:.65}
+#p5 .submit{background:#ed7355;color:white;border:2px solid #4b3020;border-radius:999px;font:inherit;font-size:clamp(14px,4vw,22px);font-weight:900}
+#p5 .submit:disabled{background:#8a9c77;opacity:1;cursor:default}
+.team-actions{padding:15px 20px 25px;background:#fff6e5;text-align:center}
+.team-actions p{font-size:12px;overflow-wrap:anywhere;line-height:1.6}
+.team-actions button{padding:12px 18px;margin:5px;border:1px solid #b7a48c;border-radius:12px;background:#fffaf1;color:#55412e;font:inherit;cursor:pointer}
+.team-actions .danger{color:#a54435}
+.team-actions button[hidden]{display:none}
 </style>
 </head>
 <body>
-<div style="max-width:520px;margin:auto;padding:12px 16px;background:#fff0ce;color:#69452c;font-size:13px;line-height:1.6;text-align:center" role="note">화면 미리보기 · 현재 서버와 연결되어 있지 않아 신청 내용은 저장되지 않습니다.</div><div id="app">
+<div id="connectionStatus" role="status" aria-live="polite"></div>
+<div id="app">
 
 <section class="page active" id="p1">
 <img class="ref" src="images/page1.png">
@@ -156,6 +171,7 @@ padding:12px 16px;border-radius:16px;font-weight:800;display:none;max-width:88%;
 <button class="hot back" onclick="show(4)" aria-label="이전으로"></button>
 <button class="hot submit" onclick="submitDemo()" aria-label="신청하기"></button>
 </section>
+<div id="summaryActions" class="team-actions" hidden><p id="teamStatus"></p><button id="editTeam" onclick="editTeam()" hidden>신청 수정</button><button id="cancelTeam" class="danger" onclick="cancelTeam()" hidden>팀 전체 취소</button><button onclick="logout()">처음으로</button></div>
 
 </div>
 
@@ -171,6 +187,7 @@ function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t
 function show(n){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.getElementById('p'+n).classList.add('active');
+  document.getElementById('summaryActions').hidden=n!==5;
   window.scrollTo(0,0);
   if(n===3) renderHolidayHits();
   if(n===2) renderStudentInfo();
@@ -234,8 +251,10 @@ function renderSummary(){
  document.getElementById('sumHoliday').textContent=holiday?`${holiday.date} ${holiday.name}`:'';
  document.getElementById('sumType').textContent=makeType||'';
 }
-function submitDemo(){toast('화면 미리보기 버전입니다. 서버가 연결되어 있지 않아 신청 내용은 저장되지 않습니다.')}
+function submitDemo(){toast('현재는 디자인 기반 HTML 프로토타입입니다. 다음 단계에서 구글시트와 연결할 수 있어요.')}
 setMode('team');
 </script>
+<script src="config.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
