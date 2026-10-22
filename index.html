@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>다산고등학교 국내·세계 기념일 홍보 활동</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8dfcf;font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:#321d12}
+#app{max-width:520px;margin:0 auto;background:#fff6e5;min-height:100vh}
+.page{display:none;position:relative;width:100%;background:#fff6e5}
+.page.active{display:block}
+.ref{width:100%;height:auto;display:block;user-select:none;-webkit-user-drag:none}
+.hot{position:absolute;border:0;background:transparent;cursor:pointer;z-index:5}
+.field{position:absolute;z-index:8;border:2px solid #7a6657;border-radius:12px;background:rgba(255,250,241,.96);
+height:4.8%;padding:0 12px;font-weight:800;font-size:clamp(14px,3.6vw,19px);color:#49392f;outline:none}
+.field:focus{border-color:#ec6046;box-shadow:0 0 0 3px rgba(236,96,70,.16)}
+.pill-select{appearance:auto}
+#p1 .field{left:31.2%;width:53.5%;height:5.3%;border:2px solid #796653;border-radius:11px;background:#fffaf1;padding:0 14px;box-shadow:none;font-size:clamp(13px,3.6vw,19px)}
+#p1 .field:focus{border-color:#c56b43;box-shadow:0 0 0 2px #c56b4326}
+#p1 select.field{appearance:auto;cursor:pointer}
+#p1 .grade{top:55.3%}
+#p1 .class{top:62.35%}
+#p1 .number{top:69.3%}
+#p1 .name{top:76.25%;height:5.5%}
+#p1 .next{left:20%;top:84.4%;width:62%;height:7%}
+
+#p2 .solo{left:14%;top:59.3%;width:35%;height:7%}
+#p2 .team{left:50%;top:59.3%;width:36%;height:7%}
+#p2 .friendNo1{left:29.5%;top:71.3%;width:20%}
+#p2 .friendName1{left:51.6%;top:71.3%;width:31.5%}
+#p2 .friendNo2{left:29.5%;top:76.0%;width:20%}
+#p2 .friendName2{left:51.6%;top:76.0%;width:31.5%}
+#p2 .friendNo3{left:29.5%;top:80.8%;width:20%}
+#p2 .friendName3{left:51.6%;top:80.8%;width:31.5%}
+#p2 .back{left:10%;top:88.1%;width:31%;height:7%}
+#p2 .next{left:22%;top:88.1%;width:62%;height:7%}
+#p2.team-mode .next{left:20%;width:64%}
+
+#p3{padding:30px 22px 24px;background:#fffaf1;min-height:100vh}
+.holiday-heading .step{margin:0 0 10px;font-size:13px;font-weight:800;color:#90775d;letter-spacing:.04em}
+.holiday-heading h1{margin:0;font-size:27px;letter-spacing:-1px;line-height:1.3}
+.holiday-heading p{margin:10px 0 24px;color:#776959;font-size:14px;line-height:1.6}
+.holiday-tabs{display:flex;padding:4px;background:#eee7db;border-radius:13px;gap:4px}
+.holiday-tabs button{flex:1;border:0;border-radius:10px;padding:12px 5px;background:transparent;font:inherit;font-weight:800;color:#7b6a57;cursor:pointer}
+.holiday-tabs button[aria-selected="true"]{background:white;color:#3e3024;box-shadow:0 1px 5px #3e302419}
+.month-navigation{display:flex;align-items:center;justify-content:space-between;margin:24px 0 10px}
+.month-navigation button{width:42px;height:42px;border:1px solid #ded5c7;border-radius:12px;background:white;font-size:24px;color:#554637;cursor:pointer}
+.month-navigation button:disabled{opacity:.3;cursor:default}
+#monthTitle{margin:0;text-align:center;font-size:21px}
+#monthCount{margin:4px 0 0;text-align:center;font-size:12px;color:#887866}
+.holiday-months{display:flex;gap:7px;overflow-x:auto;padding:8px 0 14px;scrollbar-width:thin}
+.holiday-months button{flex:0 0 auto;border:1px solid #e1d8ca;background:transparent;border-radius:999px;padding:8px 12px;color:#756552;font:inherit;font-size:13px;cursor:pointer}
+.holiday-months button[aria-current="true"]{background:#473a2d;border-color:#473a2d;color:white}
+#holidayList{display:grid;gap:10px;min-height:270px;align-content:start;margin-top:8px}
+.holiday-row{display:grid;grid-template-columns:68px minmax(0,1fr) 22px;align-items:center;gap:12px;width:100%;min-height:76px;padding:14px 12px;border:1px solid #e1d8ca;border-radius:14px;background:white;text-align:left;color:#3e3024;font:inherit;cursor:pointer}
+.holiday-row .date{font-size:13px;color:#89725b;font-weight:700}
+.holiday-row .title{font-size:16px;font-weight:800;line-height:1.5;overflow-wrap:anywhere}
+.holiday-row .mark{width:21px;height:21px;border:1.5px solid #c5b9a9;border-radius:50%;text-align:center;font-size:13px;line-height:19px}
+.holiday-row[aria-pressed="true"]{border:2px solid #c36a40;background:#fff3e7;padding:13px 11px}
+.holiday-row[aria-pressed="true"] .mark{border-color:#c36a40;background:#c36a40;color:white}
+.holiday-empty{padding:45px 12px;text-align:center;color:#978673;font-size:14px}
+.holiday-footer{position:relative;background:#fffaf1;padding:16px 0 0;margin-top:18px;border-top:1px solid #e4dbcd}
+#holidaySelection{font-size:13px;line-height:1.6;color:#77634e;min-height:44px;margin-bottom:10px;overflow-wrap:anywhere}
+#holidaySelection strong{display:block;font-size:14px;color:#443629}
+.holiday-navigation{display:flex;gap:10px}
+.holiday-navigation button{min-height:48px;padding:10px 15px;border:1px solid #dbd0c1;border-radius:12px;background:transparent;color:#65513d;font:inherit;font-weight:800;cursor:pointer}
+.holiday-navigation .continue{flex:1;background:#b95e38;border-color:#b95e38;color:white}
+#p3 button:focus-visible{outline:3px solid #28879b;outline-offset:2px}
+@media(max-width:360px){#p3{padding:24px 15px 18px}.holiday-row{grid-template-columns:60px minmax(0,1fr) 20px;gap:7px}.holiday-row .title{font-size:14px}}
+#p4 .choice{position:absolute;z-index:7;cursor:pointer;border-radius:18px;border:0;background:transparent;padding:0;color:inherit}
+#p4 .poster{left:13.3%;top:47.5%;width:36.3%;height:18.8%}
+#p4 .cards{left:51.2%;top:47.5%;width:36%;height:18.8%}
+#p4 .info{left:13.3%;top:67%;width:36.3%;height:16.4%}
+#p4 .video{left:51.2%;top:67%;width:36%;height:16.4%}
+#p4 .choice.selected{outline:3px solid #ef6046;background:rgba(255,216,107,.12)}
+#p4 .choice.selected:after{content:'✓';position:absolute;right:5%;top:4%;border-radius:50%;background:#ef6046;color:white;width:22px;height:22px;line-height:22px;font-weight:900}
+#p4 .choice:focus-visible{outline:3px solid #198aa3}
+#p4 .back{left:18.5%;top:91%;width:27%;height:5.5%}
+#p4 .next{left:46.5%;top:91%;width:37%;height:5.5%}
+#p5 .cover{position:absolute;z-index:7;background:transparent;border-radius:8px;font-size:clamp(11px,3.2vw,17px);font-weight:800;display:flex;align-items:center;padding:3px 5px;line-height:1.4;overflow-wrap:anywhere;overflow-y:auto;white-space:pre-line;left:47%;width:39%;height:6.2%}
+#p5 .me{top:48.7%}
+#p5 .mode{top:56.6%}
+#p5 .friends{top:64.4%}
+#p5 .holiday{top:72.2%}
+#p5 .type{top:80.1%}
+#p5 .back{left:18.5%;top:88.7%;width:28.7%;height:6.5%}
+#p5 .submit{left:48.5%;top:88.7%;width:34.5%;height:6.5%}
+
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:99;background:#332116;color:#fff;
+padding:12px 16px;border-radius:16px;font-weight:800;display:none;max-width:88%;text-align:center}
+#p2 .student-info{position:absolute;z-index:8;left:15.4%;top:50%;width:70%;height:5.2%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;border:2px solid #a99c8d;border-radius:12px;background:#fff5e7;font-size:clamp(12px,3.4vw,18px);font-weight:800;text-align:center}
+#p2 .student-info span{padding:2px 4px;overflow-wrap:anywhere}
+#p2 .student-info span+span{border-left:1px solid #cbbbaf}
+#p2 .friendNo,#p2 .friendName{height:4.15%;background:#fff8ee;border:2px solid #74665a;border-radius:10px;padding:0 10px;font-size:clamp(12px,3.4vw,18px)}
+#p2 .friendNo{left:29.9%;width:22.3%}
+#p2 .friendName{left:53.2%;width:32%}
+#p2 .friendNo1,#p2 .friendName1{top:71.35%}
+#p2 .friendNo2,#p2 .friendName2{top:76.02%}
+#p2 .friendNo3,#p2 .friendName3{top:80.68%}
+</style>
+</head>
+<body>
+<div style="max-width:520px;margin:auto;padding:12px 16px;background:#fff0ce;color:#69452c;font-size:13px;line-height:1.6;text-align:center" role="note">화면 미리보기 · 현재 서버와 연결되어 있지 않아 신청 내용은 저장되지 않습니다.</div><div id="app">
+
+<section class="page active" id="p1">
+<img class="ref" src="images/page1.png">
+<select id="grade" class="field grade"><option value="">학년 선택</option><option>1학년</option><option>2학년</option></select>
+<select id="classNo" class="field class"><option value="">반 선택</option><option>1반</option><option>2반</option><option>3반</option><option>4반</option><option>5반</option><option>6반</option><option>7반</option><option>8반</option></select>
+<select id="number" class="field number"><option value="">번호 선택</option><option>1번</option><option>2번</option><option>3번</option><option>4번</option><option>5번</option><option>6번</option><option>7번</option><option>8번</option><option>9번</option><option>10번</option><option>11번</option><option>12번</option><option>13번</option><option>14번</option><option>15번</option><option>16번</option><option>17번</option><option>18번</option><option>19번</option><option>20번</option><option>21번</option><option>22번</option><option>23번</option><option>24번</option><option>25번</option><option>26번</option><option>27번</option></select>
+<input id="name" class="field name" placeholder="이름을 입력하세요">
+<button class="hot next" onclick="next1()" aria-label="확인하고 시작하기"></button>
+</section>
+
+<section class="page team-mode" id="p2">
+<img class="ref" id="p2img" src="images/page2_team.png">
+<div class="student-info" aria-label="내 정보" aria-live="polite"><span id="infoGrade"></span><span id="infoClass"></span><span id="infoNumber"></span><span id="infoName"></span></div>
+<button class="hot solo" onclick="setMode('solo')" aria-label="혼자 할래요"></button>
+<button class="hot team" onclick="setMode('team')" aria-label="친구와 함께할래요"></button>
+<select class="field friendNo1 friendNo"><option value="">번호</option><option>1번</option><option>2번</option><option>3번</option><option>4번</option><option>5번</option><option>6번</option><option>7번</option><option>8번</option><option>9번</option><option>10번</option><option>11번</option><option>12번</option><option>13번</option><option>14번</option><option>15번</option><option>16번</option><option>17번</option><option>18번</option><option>19번</option><option>20번</option><option>21번</option><option>22번</option><option>23번</option><option>24번</option><option>25번</option><option>26번</option><option>27번</option></select>
+<input class="field friendName1 friendName" placeholder="이름">
+<select class="field friendNo2 friendNo"><option value="">번호</option><option>1번</option><option>2번</option><option>3번</option><option>4번</option><option>5번</option><option>6번</option><option>7번</option><option>8번</option><option>9번</option><option>10번</option><option>11번</option><option>12번</option><option>13번</option><option>14번</option><option>15번</option><option>16번</option><option>17번</option><option>18번</option><option>19번</option><option>20번</option><option>21번</option><option>22번</option><option>23번</option><option>24번</option><option>25번</option><option>26번</option><option>27번</option></select>
+<input class="field friendName2 friendName" placeholder="이름">
+<select class="field friendNo3 friendNo"><option value="">번호</option><option>1번</option><option>2번</option><option>3번</option><option>4번</option><option>5번</option><option>6번</option><option>7번</option><option>8번</option><option>9번</option><option>10번</option><option>11번</option><option>12번</option><option>13번</option><option>14번</option><option>15번</option><option>16번</option><option>17번</option><option>18번</option><option>19번</option><option>20번</option><option>21번</option><option>22번</option><option>23번</option><option>24번</option><option>25번</option><option>26번</option><option>27번</option></select>
+<input class="field friendName3 friendName" placeholder="이름">
+<button class="hot back" onclick="show(1)" aria-label="이전으로"></button>
+<button class="hot next" onclick="next2()" aria-label="다음으로 넘어가기"></button>
+</section>
+
+<section class="page" id="p3" aria-label="기념일 선택">
+<header class="holiday-heading"><p class="step">3 / 5 · 기념일 선택</p><h1>어떤 기념일을 홍보할까요?</h1><p>월별 목록에서 기념일을 하나 선택해주세요.</p></header>
+<div class="holiday-tabs" role="tablist" aria-label="기념일 구분"><button id="domTab" role="tab" aria-selected="true" aria-controls="holidayList" onclick="setHolidayTab('dom')">국내</button><button id="worldTab" role="tab" aria-selected="false" aria-controls="holidayList" onclick="setHolidayTab('world')">세계 기념일</button></div>
+<div class="month-navigation"><button id="prevMonth" onclick="moveMonth(-1)" aria-label="이전 달">‹</button><div><h2 id="monthTitle"></h2><p id="monthCount"></p></div><button id="nextMonth" onclick="moveMonth(1)" aria-label="다음 달">›</button></div>
+<nav id="holidayMonths" class="holiday-months" aria-label="월 선택"></nav>
+<div id="holidayList" role="group" aria-label="기념일 목록"></div>
+<footer class="holiday-footer"><div id="holidaySelection" role="status"></div><div class="holiday-navigation"><button onclick="show(2)">이전으로</button><button class="continue" onclick="next3()">다음으로</button></div></footer>
+</section>
+
+<section class="page" id="p4">
+<img class="ref" src="images/page4.png">
+<button type="button" class="choice poster" data-type="포스터" onclick="chooseType(this)" aria-label="포스터" aria-pressed="false"></button>
+<button type="button" class="choice cards" data-type="카드뉴스" onclick="chooseType(this)" aria-label="카드뉴스" aria-pressed="false"></button>
+<button type="button" class="choice info" data-type="인포그래픽" onclick="chooseType(this)" aria-label="인포그래픽" aria-pressed="false"></button>
+<button type="button" class="choice video" data-type="영상 제작" onclick="chooseType(this)" aria-label="영상 제작" aria-pressed="false"></button>
+<button class="hot back" onclick="show(3)" aria-label="이전으로"></button>
+<button class="hot next" onclick="next4()" aria-label="다음으로 넘어가기"></button>
+</section>
+
+<section class="page" id="p5">
+<img class="ref" src="images/page5.png">
+<div class="cover me" id="sumMe"></div>
+<div class="cover mode" id="sumMode"></div>
+<div class="cover friends" id="sumFriends"></div>
+<div class="cover holiday" id="sumHoliday"></div>
+<div class="cover type" id="sumType"></div>
+<button class="hot back" onclick="show(4)" aria-label="이전으로"></button>
+<button class="hot submit" onclick="submitDemo()" aria-label="신청하기"></button>
+</section>
+
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+const IMG = {"p1": "images/page1.png", "p2team": "images/page2_team.png", "p2solo": "images/page2_solo.png", "p3dom": "images/page3_domestic.png?v=vertical2", "p3world": "images/page3_world.png?v=vertical2", "p4": "images/page4.png", "p5": "images/page5.png"};
+const DOMESTIC = [["3월 1일", "3·1절 (국경일)"], ["4월 7일", "보건의 날"], ["4월 20일", "장애인의 날"], ["4월 22일", "지구의 날"], ["5월 1일", "근로자의 날 (노동절)"], ["5월 5일", "어린이날"], ["5월 18일", "5·18 민주화운동 기념일"], ["6월 6일", "현충일"], ["6월 10일", "6·10 민주항쟁 기념일"], ["7월 17일", "제헌절 (국경일)"], ["8월 14일", "일본군 '위안부' 피해자 기림의 날"], ["8월 15일", "광복절 (국경일)"], ["9월 7일", "푸른 하늘의 날"], ["10월 3일", "개천절 (국경일)"], ["10월 9일", "한글날 (국경일)"], ["10월 25일", "독도의 날"], ["11월 3일", "학생독립운동 기념일"], ["11월 17일", "순국선열의 날"]];
+const WORLD = [["1월 1일", "세계 평화의 날"], ["1월 24일", "세계 교육의 날"], ["1월 27일", "국제 홀로코스트 추모의 날"], ["2월 4일", "세계 암의 날"], ["2월 13일", "세계 라디오의 날"], ["2월 20일", "세계 사회정의의 날"], ["2월 21일", "국제 모국어의 날"], ["3월 8일", "세계 여성의 날"], ["3월 21일", "세계 인종차별 철폐의 날"], ["3월 22일", "세계 물의 날"], ["4월 7일", "세계 보건의 날"], ["4월 23일", "세계 책과 저작권의 날"], ["5월 5일", "세계 미소의 날"], ["5월 31일", "세계 금연의 날"], ["6월 5일", "세계 환경의 날"], ["6월 20일", "세계 난민의 날"], ["7월 11일", "세계 인구의 날"], ["7월 30일", "국제 우정의 날"], ["8월 12일", "세계 청소년의 날"], ["8월 19일", "세계 인도주의의 날"], ["9월 8일", "세계 문해의 날"], ["9월 21일", "세계 평화의 날"], ["10월 16일", "세계 식량의 날"], ["11월 20일", "세계 아동의 날"], ["11월 25일", "세계 여성폭력 근절의 날"], ["12월 3일", "세계 장애인의 날"], ["12월 10일", "세계 인권 선언일"], ["12월 18일", "세계 이주민의 날"], ["12월 20일", "인간 연대의 날"]];
+const grade = document.getElementById('grade'), classNo = document.getElementById('classNo'), number = document.getElementById('number'), studentName = document.getElementById('name');
+let mode='team', tab='dom', holiday=null, makeType=null;
+
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(t._timer);t._timer=setTimeout(()=>t.style.display='none',1900)}
+function show(n){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('p'+n).classList.add('active');
+  window.scrollTo(0,0);
+  if(n===3) renderHolidayHits();
+  if(n===2) renderStudentInfo();
+  if(n===5) renderSummary();
+}
+function renderStudentInfo(){
+ const values={infoGrade:grade.value,infoClass:classNo.value,infoNumber:number.value,infoName:studentName.value.trim()};
+ Object.entries(values).forEach(([id,value])=>document.getElementById(id).textContent=value);
+}
+function next1(){
+ if(!grade.value||!classNo.value||!number.value||!studentName.value.trim()) return toast('학년, 반, 번호, 이름을 모두 입력해주세요.');
+ show(2);
+}
+function setMode(m){
+ mode=m;
+ const img=document.getElementById('p2img'), p=document.getElementById('p2');
+ if(m==='solo'){
+   img.src=IMG.p2solo;p.classList.remove('team-mode');
+   document.querySelectorAll('.friendNo,.friendName').forEach(x=>x.style.display='none');
+ }else{
+   img.src=IMG.p2team;p.classList.add('team-mode');
+   document.querySelectorAll('.friendNo,.friendName').forEach(x=>x.style.display='block');
+ }
+}
+const selectedMonths={dom:3,world:1};
+function next2(){show(3)}
+function setHolidayTab(t){if(t!==tab){tab=t;renderHolidayHits()}}
+function moveMonth(direction){selectedMonths[tab]=Math.max(1,Math.min(12,selectedMonths[tab]+direction));renderHolidayHits()}
+function updateHolidaySelection(){
+ const summary=document.getElementById('holidaySelection');summary.replaceChildren();
+ if(holiday){const label=document.createElement('span');label.textContent='선택한 기념일';const value=document.createElement('strong');value.textContent=`[${holiday.kind}] ${holiday.date} · ${holiday.name}`;summary.append(label,value)}
+ else summary.textContent='아직 선택한 기념일이 없습니다.';
+ document.querySelectorAll('.holiday-row').forEach(button=>{const selected=!!holiday&&button.dataset.kind===holiday.kind&&button.dataset.date===holiday.date&&button.dataset.name===holiday.name;button.setAttribute('aria-pressed',String(selected));button.querySelector('.mark').textContent=selected?'✓':''});
+}
+function renderHolidayHits(){
+ const month=selectedMonths[tab],list=(tab==='dom'?DOMESTIC:WORLD).filter(([date])=>parseInt(date,10)===month),kind=tab==='dom'?'국내':'세계';
+ document.getElementById('domTab').setAttribute('aria-selected',String(tab==='dom'));
+ document.getElementById('worldTab').setAttribute('aria-selected',String(tab==='world'));
+ document.getElementById('monthTitle').textContent=`${month}월`;
+ document.getElementById('monthCount').textContent=`${kind} 기념일 ${list.length}개`;
+ document.getElementById('prevMonth').disabled=month===1;
+ document.getElementById('nextMonth').disabled=month===12;
+ const months=document.getElementById('holidayMonths');months.replaceChildren();
+ for(let m=1;m<=12;m++){const button=document.createElement('button');button.textContent=`${m}월`;button.setAttribute('aria-current',String(m===month));button.onclick=()=>{selectedMonths[tab]=m;renderHolidayHits()};months.appendChild(button)}
+ months.children[month-1].scrollIntoView({block:'nearest',inline:'nearest'});
+ const holder=document.getElementById('holidayList');holder.replaceChildren();
+ if(!list.length){const empty=document.createElement('p');empty.className='holiday-empty';empty.textContent='이번 달에는 등록된 기념일이 없습니다.';holder.appendChild(empty)}
+ list.forEach(([date,name])=>{const button=document.createElement('button');button.className='holiday-row';button.type='button';Object.assign(button.dataset,{date,name,kind});const dateLabel=document.createElement('span');dateLabel.className='date';dateLabel.textContent=date;const title=document.createElement('span');title.className='title';title.textContent=name;const mark=document.createElement('span');mark.className='mark';mark.setAttribute('aria-hidden','true');button.append(dateLabel,title,mark);button.onclick=()=>{holiday={date,name,kind};updateHolidaySelection()};holder.appendChild(button)});
+ updateHolidaySelection();
+}
+function next3(){if(!holiday)return toast('기념일을 하나 선택해주세요.');show(4)}
+function chooseType(el){
+ document.querySelectorAll('#p4 .choice').forEach(x=>{x.classList.remove('selected');x.setAttribute('aria-pressed','false')});el.classList.add('selected');el.setAttribute('aria-pressed','true');makeType=el.dataset.type;
+}
+function next4(){if(!makeType)return toast('제작 유형을 선택해주세요.');show(5)}
+function renderSummary(){
+ document.getElementById('sumMe').textContent=`${grade.value} ${classNo.value} ${number.value} ${studentName.value.trim()}`;
+ document.getElementById('sumMode').textContent=mode==='solo'?'개인 활동':'팀 활동';
+ const fn=[...document.querySelectorAll('.friendName')].map((x,i)=>({name:x.value.trim(),no:document.querySelectorAll('.friendNo')[i].value})).filter(x=>x.name||x.no);
+ document.getElementById('sumFriends').textContent=mode==='solo'?'해당 없음':(fn.length?fn.map(x=>`${x.no} ${x.name}`.trim()).join(', '):'팀원 미입력');
+ document.getElementById('sumHoliday').textContent=holiday?`${holiday.date} ${holiday.name}`:'';
+ document.getElementById('sumType').textContent=makeType||'';
+}
+function submitDemo(){toast('화면 미리보기 버전입니다. 서버가 연결되어 있지 않아 신청 내용은 저장되지 않습니다.')}
+setMode('team');
+</script>
+</body>
+</html>
